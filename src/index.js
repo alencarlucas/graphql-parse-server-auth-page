@@ -11,14 +11,14 @@ const httpLink = new HttpLink({ uri: 'https://parseapi.back4app.com/graphql' });
 
 const authLink = new ApolloLink((operation, forward) => {
   // Retrieve the authorization token from local storage.
-  const session_token = localStorage.getItem('session_token');
+  const sessionToken = localStorage.getItem('sessionToken');
 
   // Use the setContext method to set the HTTP headers.
   operation.setContext({
     headers: {
       "X-Parse-Application-Id": PARSE_APPLICATION_ID,
       "X-Parse-Javascript-Key": PARSE_JAVASCRIPT_KEY,
-      "X-Parse-Session-Token": session_token || ''
+      "X-Parse-Session-Token": sessionToken || ''
     }
   });
 

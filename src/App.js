@@ -1,27 +1,46 @@
 import React from 'react';
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
-import './App.css';
+import { BrowserRouter } from 'react-router-dom'
 
-const LOADING_MESSAGE = "Checking your API’s health..."
-const ERROR_MESSAGE = "There is something wrong with your API"
-const SUCCESS_MESSAGE = "Your API is working fine"
+import Home from './components/Home'
+
+export const LOADING_MESSAGE = "Checking your API’s health..."
+export const ERROR_MESSAGE = "There is something wrong with your API"
+export const SUCCESS_MESSAGE = "Your API is working fine"
+
+export const GET_HEALTH = gql`
+  query Health {
+    health
+  }`
+
+export const POST_USER = (gql`
+  mutation SignUp($username: String! $password: String!) {
+    users {
+      signUp(fields: {
+        username: $username
+        password: $password
+      }) {
+        sessionToken
+      }
+    }
+  }`
+)
+
 
 function App() {
   return (
-    <Query
-      query={gql`
-      query Health {
-        health
-      }
-    `}
-    >
-      {({ loading, error, data }) => {
-        if (loading) return <p>{ LOADING_MESSAGE }</p>
-        if (error) return <p>{ ERROR_MESSAGE }</p>
-        return <p>{ data.health ? SUCCESS_MESSAGE : ERROR_MESSAGE }</p>
-      }}
-    </Query>
+    <BrowserRouter>
+      <Query
+        query={GET_HEALTH}
+      >
+        {({ loading, error, data }) => {
+          if (loading) return <p>{LOADING_MESSAGE}</p>
+          if (error) return <p>{ERROR_MESSAGE}</p>
+          return data.health ? <Home /> : <p>{ERROR_MESSAGE}</p>
+        }}
+      </Query>
+    </BrowserRouter>
   );
 }
 
