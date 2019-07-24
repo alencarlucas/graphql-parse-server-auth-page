@@ -5,6 +5,7 @@ import { ApolloProvider } from 'react-apollo';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { PARSE_APPLICATION_ID, PARSE_JAVASCRIPT_KEY } from './settings';
 
 const httpLink = new HttpLink({ uri: 'https://parseapi.back4app.com/graphql' });
 
@@ -15,9 +16,9 @@ const authLink = new ApolloLink((operation, forward) => {
   // Use the setContext method to set the HTTP headers.
   operation.setContext({
     headers: {
-      "X-Parse-Application-Id": process.env.REACT_APP_PARSE_APPLICATION_ID,
-      "X-Parse-Javascript-Key": process.env.REACT_APP_PARSE_JAVASCRIPT_KEY,
-      "X-Parse-Session-Token": session_token
+      "X-Parse-Application-Id": PARSE_APPLICATION_ID,
+      "X-Parse-Javascript-Key": PARSE_JAVASCRIPT_KEY,
+      "X-Parse-Session-Token": session_token || ''
     }
   });
 
